@@ -18,16 +18,29 @@ const app = express();
 const port = Number(process.env.PORT || 5001);
 const clientPath = path.join(__dirname, "../../client/dist");
 const clientIndexPath = path.join(clientPath, "index.html");
-const allowedOrigins = (process.env.CORS_ORIGIN || "")
+const allowedOrigins = (process.env.CORS_ORIGIN || process.env.FRONTEND_URL || "")
   .split(",")
-  .map((origin) => origin.trim())
+  .map((origin) => normalizeOrigin(origin))
   .filter(Boolean);
+
+function normalizeOrigin(origin) {
+  return origin.trim().replace(/\/$/, "");
+}
+
+function isAllowedOrigin(origin) {
+  if (!origin || allowedOrigins.length === 0) {
+    return true;
+  }
+
+  const normalizedOrigin = normalizeOrigin(origin);
+  return allowedOrigins.includes(normalizedOrigin) || normalizedOrigin.endsWith(".up.railway.app");
+}
 
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
