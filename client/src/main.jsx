@@ -20,7 +20,8 @@ import "./styles.css";
 
 const blankProject = { name: "", description: "", members: [] };
 const blankTask = { title: "", project: "", assignee: "", priority: "Medium", dueDate: "", description: "" };
-const apiBaseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+const rawApiUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/$/, "");
+const apiBaseUrl = rawApiUrl && !/^https?:\/\//i.test(rawApiUrl) ? `https://${rawApiUrl}` : rawApiUrl;
 const views = [
   { id: "dashboard", label: "Dashboard", icon: BarChart3 },
   { id: "projects", label: "Projects", icon: FolderKanban },

@@ -102,7 +102,7 @@ Frontend service:
 - Build command: `npm install && npm run build`
 - Start command: `npm run preview -- --port $PORT`
 - Variables:
-  - `VITE_API_URL` set to your deployed backend URL
+  - `VITE_API_URL` set to your deployed backend URL, including `https://`
 
 The backend also exposes `/health` for a simple deployment health check.
 
@@ -122,7 +122,7 @@ cd client
 npm run dev
 ```
 
-If you deploy the backend separately, set `VITE_API_URL` in the frontend service to the backend Railway URL.
+If you deploy the backend separately, set `VITE_API_URL` in the frontend service to the backend Railway URL with `https://` included.
 
 ## Roles
 
